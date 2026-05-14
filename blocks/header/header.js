@@ -1,171 +1,178 @@
-import { getMetadata } from '../../scripts/aem.js';
-import { loadFragment } from '../fragment/fragment.js';
-
-// media query match that indicates mobile/tablet width
-const isDesktop = window.matchMedia('(min-width: 900px)');
-
-function closeOnEscape(e) {
-  if (e.code === 'Escape') {
-    const nav = document.getElementById('nav');
-    const navSections = nav.querySelector('.nav-sections');
-    if (!navSections) return;
-    const navSectionExpanded = navSections.querySelector('[aria-expanded="true"]');
-    if (navSectionExpanded && isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleAllNavSections(navSections);
-      navSectionExpanded.focus();
-    } else if (!isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleMenu(nav, navSections);
-      nav.querySelector('button').focus();
-    }
-  }
-}
-
-function closeOnFocusLost(e) {
-  const nav = e.currentTarget;
-  if (!nav.contains(e.relatedTarget)) {
-    const navSections = nav.querySelector('.nav-sections');
-    if (!navSections) return;
-    const navSectionExpanded = navSections.querySelector('[aria-expanded="true"]');
-    if (navSectionExpanded && isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleAllNavSections(navSections, false);
-    } else if (!isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleMenu(nav, navSections, false);
-    }
-  }
-}
-
-function openOnKeydown(e) {
-  const focused = document.activeElement;
-  const isNavDrop = focused.className === 'nav-drop';
-  if (isNavDrop && (e.code === 'Enter' || e.code === 'Space')) {
-    const dropExpanded = focused.getAttribute('aria-expanded') === 'true';
-    // eslint-disable-next-line no-use-before-define
-    toggleAllNavSections(focused.closest('.nav-sections'));
-    focused.setAttribute('aria-expanded', dropExpanded ? 'false' : 'true');
-  }
-}
-
-function focusNavSection() {
-  document.activeElement.addEventListener('keydown', openOnKeydown);
-}
+import { decorateIcons } from '../../scripts/aem.js';
 
 /**
- * Toggles all nav sections
- * @param {Element} sections The container element
- * @param {Boolean} expanded Whether the element should be expanded or collapsed
- */
-function toggleAllNavSections(sections, expanded = false) {
-  if (!sections) return;
-  sections.querySelectorAll('.nav-sections .default-content-wrapper > ul > li').forEach((section) => {
-    section.setAttribute('aria-expanded', expanded);
-  });
-}
-
-/**
- * Toggles the entire nav
- * @param {Element} nav The container element
- * @param {Element} navSections The nav sections within the container element
- * @param {*} forceExpanded Optional param to force nav expand behavior when not null
- */
-function toggleMenu(nav, navSections, forceExpanded = null) {
-  const expanded = forceExpanded !== null ? !forceExpanded : nav.getAttribute('aria-expanded') === 'true';
-  const button = nav.querySelector('.nav-hamburger button');
-  document.body.style.overflowY = (expanded || isDesktop.matches) ? '' : 'hidden';
-  nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-  toggleAllNavSections(navSections, expanded || isDesktop.matches ? 'false' : 'true');
-  button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
-  // enable nav dropdown keyboard accessibility
-  if (navSections) {
-    const navDrops = navSections.querySelectorAll('.nav-drop');
-    if (isDesktop.matches) {
-      navDrops.forEach((drop) => {
-        if (!drop.hasAttribute('tabindex')) {
-          drop.setAttribute('tabindex', 0);
-          drop.addEventListener('focus', focusNavSection);
-        }
-      });
-    } else {
-      navDrops.forEach((drop) => {
-        drop.removeAttribute('tabindex');
-        drop.removeEventListener('focus', focusNavSection);
-      });
-    }
-  }
-
-  // enable menu collapse on escape keypress
-  if (!expanded || isDesktop.matches) {
-    // collapse menu on escape press
-    window.addEventListener('keydown', closeOnEscape);
-    // collapse menu on focus lost
-    nav.addEventListener('focusout', closeOnFocusLost);
-  } else {
-    window.removeEventListener('keydown', closeOnEscape);
-    nav.removeEventListener('focusout', closeOnFocusLost);
-  }
-}
-
-/**
- * loads and decorates the header, mainly the nav
+ * loads and decorates the header, then adds interactivity
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
-  // load nav as fragment
-  const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-  const fragment = await loadFragment(navPath);
+  console.log('header BEGIN.....', block);
 
-  // decorate nav DOM
+  // Clear the block content
   block.textContent = '';
+
+  // Create the main header container
+  const headerContainer = document.createElement('div');
+  headerContainer.classList.add('header-container');
+
+  // 1. Logo Section
+  const logo = document.createElement('div');
+  logo.classList.add('header-logo');
+  const logoLink = document.createElement('a');
+  logoLink.href = '/';
+  const logoImg = document.createElement('img');
+  logoImg.src = 'https://qik.do/content/experience-fragments/qik/do/es/site/header/home-page/_jcr_content/root/image.coreimg.svg/1733256272763/logo.svg';
+  logoImg.alt = 'logo';
+  logoLink.append(logoImg);
+  logo.append(logoLink);
+
+  // 2. Navigation Section
   const nav = document.createElement('nav');
-  nav.id = 'nav';
-  while (fragment.firstElementChild) nav.append(fragment.firstElementChild);
+  nav.classList.add('header-nav');
+  const navList = document.createElement('ul');
 
-  const classes = ['brand', 'sections', 'tools'];
-  classes.forEach((c, i) => {
-    const section = nav.children[i];
-    if (section) section.classList.add(`nav-${c}`);
-  });
+  // Updated menu structure from provided HTML
+  const menuItems = [
+    { text: 'Portada', url: '/' },
+    { text: 'Qik Pro', url: '/pro' },
+    {
+      text: 'Productos',
+      url: '/portada',
+      submenu: [
+        { text: 'Tarjeta de Crédito Qik', url: '/tarjetadecredito' },
+        { text: 'Cuenta Qik', url: '/cuentaqik' },
+        { text: 'Préstamos Qik', url: '/prestamosqik' },
+        { text: 'Certificados Qik', url: '/certificados' },
+        { text: 'Programa Crea Crédito', url: '/creacreditoqik' },
+      ],
+    },
+    {
+      text: 'Ayuda Qik',
+      url: '/AyudaQik.html',
+      submenu: [
+        { text: 'Qik Pro', url: '/AyudaQik/Qik-Pro.html' },
+        { text: 'Tarjeta Qik', url: '/AyudaQik/Tarjeta-de-Credito-Qik/Sobre-la-Tarjeta-de-Credito-Qik.html' },
+        { text: 'Cuenta Qik', url: '/AyudaQik/Cuenta-Qik/Sobre-la-Cuenta-de-Ahorros-Qik.html' },
+        { text: 'Préstamos Qik', url: '/AyudaQik/Prestamos-Qik/Sobre-Prestamos-Qik.html' },
+        { text: 'Soluciones de Pagos', url: '/AyudaQik/Funcionalidades-Qik/Pago-de-Servicios/Sobre-Pago-de-Servicios-Qik.html' },
+        { text: 'Débito Qik', url: '/AyudaQik/Tarjeta-de-Debito-Qik/Sobre-la-Tarjeta-de-Debito-Qik.html' },
+        { text: 'Certificados Qik', url: '/AyudaQik/Certificados-Qik.html' },
+        { text: 'Programa Crea Crédito', url: '/creacreditoqik.html' },
+      ],
+    },
+  ];
 
-  const navBrand = nav.querySelector('.nav-brand');
-  const brandLink = navBrand.querySelector('.button');
-  if (brandLink) {
-    brandLink.className = '';
-    brandLink.closest('.button-container').className = '';
-  }
+  const allItems = [];
 
-  const navSections = nav.querySelector('.nav-sections');
-  if (navSections) {
-    navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
-      if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
-      navSection.addEventListener('click', () => {
-        if (isDesktop.matches) {
-          const expanded = navSection.getAttribute('aria-expanded') === 'true';
-          toggleAllNavSections(navSections);
-          navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+  menuItems.forEach((item) => {
+    const li = document.createElement('li');
+    const mainLink = document.createElement('a');
+    mainLink.href = item.url;
+    mainLink.target = '_self';
+    const mainSpan = document.createElement('span');
+    mainSpan.setAttribute('label', item.text);
+    mainSpan.textContent = item.text;
+    mainLink.append(mainSpan);
+
+    const arrowSpan = document.createElement('span');
+    const closeMenu = document.createElement('div');
+    closeMenu.classList.add('js-close-menu');
+
+    if (item.submenu) {
+      li.classList.add('has-submenu');
+      li.append(mainLink);
+      li.append(arrowSpan);
+
+      const subUl = document.createElement('ul');
+      item.submenu.forEach((sub) => {
+        const subLi = document.createElement('li');
+        const subLink = document.createElement('a');
+        subLink.href = sub.url;
+        subLink.target = '_self';
+        const subSpan = document.createElement('span');
+        subSpan.setAttribute('label', sub.text);
+        subSpan.textContent = sub.text;
+        subLink.append(subSpan);
+        subLi.append(subLink);
+        subUl.append(subLi);
+      });
+      li.append(subUl);
+      li.append(closeMenu);
+
+      arrowSpan.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isActive = li.classList.contains('active');
+        // Remove active from all others
+        allItems.forEach((other) => {
+          other.li.classList.remove('active');
+          if (other.ul) other.ul.classList.remove('active');
+          other.close.classList.remove('active');
+        });
+        // Toggle current
+        if (!isActive) {
+          li.classList.add('active');
+          subUl.classList.add('active');
+          closeMenu.classList.add('active');
         }
       });
-    });
-  }
 
-  // hamburger for mobile
-  const hamburger = document.createElement('div');
-  hamburger.classList.add('nav-hamburger');
-  hamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="Open navigation">
-      <span class="nav-hamburger-icon"></span>
-    </button>`;
-  hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
-  nav.prepend(hamburger);
-  nav.setAttribute('aria-expanded', 'false');
-  // prevent mobile nav behavior on window resize
-  toggleMenu(nav, navSections, isDesktop.matches);
-  isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
+      closeMenu.addEventListener('click', () => {
+        li.classList.remove('active');
+        subUl.classList.remove('active');
+        closeMenu.classList.remove('active');
+      });
 
-  const navWrapper = document.createElement('div');
-  navWrapper.className = 'nav-wrapper';
-  navWrapper.append(nav);
-  block.append(navWrapper);
+      allItems.push({ li, ul: subUl, close: closeMenu });
+    } else {
+      li.append(mainLink);
+      arrowSpan.classList.add('hide-md');
+      li.append(arrowSpan);
+      li.append(closeMenu);
+
+      arrowSpan.addEventListener('click', () => {
+        window.open(mainLink.href, mainLink.target);
+      });
+
+      allItems.push({ li, close: closeMenu });
+    }
+    navList.append(li);
+  });
+  nav.append(navList);
+
+  // 3. Actions Section
+  const actions = document.createElement('div');
+  actions.classList.add('header-actions');
+
+  const buttonWrapper = document.createElement('div');
+  buttonWrapper.classList.add('button', 'button--negative');
+
+  const cta = document.createElement('a');
+  cta.id = 'button-header-cta';
+  cta.classList.add('cmp-button');
+  cta.href = '#open-modal__preregistro';
+  cta.innerHTML = '<span class="cmp-button__text">Unirme a Qik</span>';
+
+  buttonWrapper.append(cta);
+  actions.append(buttonWrapper);
+
+  const toggle = document.createElement('button');
+  toggle.classList.add('menu-toggle');
+  toggle.textContent = '☰';
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.setAttribute('aria-label', 'Toggle navigation');
+
+  actions.append(toggle);
+
+  // Assemble Header
+  headerContainer.append(logo, nav, actions);
+  block.append(headerContainer);
+
+  // 4. Interactivity: Mobile Menu Toggle
+  toggle.addEventListener('click', () => {
+    const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', !isExpanded);
+    block.classList.toggle('menu-open');
+  });
+
+  // Decorate icons if any are used in the future
+  decorateIcons(block);
 }
