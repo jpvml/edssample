@@ -3,10 +3,16 @@
  * @param {Element} block The hero block element
  */
 export default async function decorate(block) {
+  console.log('Hero block content:', block);
+  const heading = block.querySelector('h1');
+  const authoredPicture = block.querySelector('picture');
+  // get heading text value
+  const headingValue = heading ? heading.textContent : null;
+
   // Hardcoded content for this version as requested
   const data = {
     intro: 'BIENVENIDO A <b>QIK BANCO DIGITAL</b>',
-    title: 'Todo lo que esperas de un banco, 100% adaptado a tu vida digital. Únete hoy.',
+    title: headingValue || 'Todo lo que esperas de un banco, 100% adaptado a tu vida digital. Únete hoy.',
     subtitle: 'Productos y servicios financieros, con más beneficios y menos costos. <b>100% digital.</b>',
     bgColor: '#0082cd',
     image: {
@@ -47,12 +53,16 @@ export default async function decorate(block) {
   const rightImage = document.createElement('div');
   rightImage.classList.add('hero__right-image');
 
-  rightImage.innerHTML = `
-    <picture>
-      <source media="(min-width: 768px)" srcset="${data.image.desktop}">
-      <img fetchpriority="high" src="${data.image.mobile}" alt="${data.image.alt}" width="489" height="484">
-    </picture>
-  `;
+  if (authoredPicture) {
+    rightImage.append(authoredPicture);
+  } else {
+    rightImage.innerHTML = `
+      <picture>
+        <source media="(min-width: 768px)" srcset="${data.image.desktop}">
+        <img fetchpriority="high" src="${data.image.mobile}" alt="${data.image.alt}" width="489" height="484">
+      </picture>
+    `;
+  }
   right.append(rightImage);
 
   wrapper.append(left, right);

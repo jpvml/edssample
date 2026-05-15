@@ -58,7 +58,7 @@
 }
 
 .hero .title h1 {
-  font-family: var(--fixed-font-family); /* Chillax Bold */
+  font-family: var(--fixed-font-family);
   font-size: 36px;
   line-height: 1.2;
   margin: 16px 0;
