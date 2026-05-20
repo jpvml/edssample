@@ -9,16 +9,11 @@ export default async function decorate(block) {
   // get heading text value
   const headingValue = heading ? heading.textContent : null;
 
-  // get the second p element text
-  let topTitle = block.querySelectorAll('p')[1].outerHTML;
-  if (topTitle) {
-    topTitle = topTitle.replace(/<p>/g, '').replace(/<\/p>/g, '').trim();
-  }
-  // get the subtitle p element text
-  let subTitle = block.querySelectorAll('p')[2].outerHTML;
-  if (subTitle) {
-    subTitle = subTitle.replace(/<p>/g, '').replace(/<\/p>/g, '').trim();
-  }
+  // get the second p element text safely
+  const paragraphs = block.querySelectorAll('p');
+  const topTitle = paragraphs[1] ? paragraphs[1].innerHTML.trim() : '';
+  // get the subtitle p element text safely
+  const subTitle = paragraphs[2] ? paragraphs[2].innerHTML.trim() : '';
 
   // Hardcoded content for this version as requested
   const data = {
