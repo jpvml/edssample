@@ -82,7 +82,7 @@ header {
   width: 24px;
 }
 
-.header-nav > ul > li > span:after {
+.header-nav > ul > li > span::after {
   background-image: url("https://qik.do/etc.clientlibs/qik/clientlibs/clientlib-site/resources/icons/chevron-right.svg");
   content: "";
   display: inline-block;
@@ -132,7 +132,7 @@ header {
 }
 
 /* Desktop Styles */
-@media only screen and (min-width: 768px) {
+@media only screen and (width >= 768px) {
   .header-nav {
     display: block;
     height: auto;
@@ -164,7 +164,7 @@ header {
   }
 
 
-  .header-nav > ul > li > a > span:after {
+  .header-nav > ul > li > a > span::after {
     content: attr(label);
     display: block;
     font-weight: 700;
@@ -186,8 +186,8 @@ header {
     transform: none;
   }
 
-  .header-nav > ul > li.active:after,
-  .header-nav > ul > li:hover:after {
+  .header-nav > ul > li.active::after,
+  .header-nav > ul > li:hover::after {
     background-color: #fff;
     bottom: -15px;
     content: "";
@@ -261,9 +261,10 @@ header {
 }
 
 /* Button & Actions */
+
 /* Official Qik Button Styles */
 .header .button {
-  font-family: DM Sans, sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 1pc;
   font-style: normal;
   font-weight: 700;
@@ -305,7 +306,7 @@ header {
   align-items: center;
   justify-content: center;
   color: #545454;
-  font-family: DM Sans, sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 1pc;
   font-style: normal;
   font-weight: 400;
@@ -321,10 +322,10 @@ header {
   color: #fff;
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .menu-toggle {
     display: block;
   }
 }
 
-@media (max-width: 768px) { .header-actions .button { display: none; } }
+@media (width <= 768px) { .header-actions .button { display: none; } }

@@ -5,7 +5,7 @@ import { decorateIcons, getMetadata } from '../../scripts/aem.js';
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
-  console.log('header BEGIN.....', block);
+  // console.log('header BEGIN.....', block);
 
   // load nav as fragment
   const navMeta = getMetadata('nav');
@@ -19,7 +19,7 @@ export default async function decorate(block) {
 
   if (resp.ok) {
     const html = await resp.text();
-    console.log('Header fragment content:', html);
+    // console.log('Header fragment content:', html);
     const temp = document.createElement('div');
     temp.innerHTML = html;
 
@@ -33,9 +33,7 @@ export default async function decorate(block) {
       // get navigation
       const navUl = cols[1].querySelector('ul');
       if (navUl) {
-
         const parseNav = (lis) => lis.map((li) => {
-
           const label = [...li.childNodes]
             .filter((n) => n.nodeType === Node.TEXT_NODE)
             .map((n) => n.textContent.trim())
@@ -61,7 +59,7 @@ export default async function decorate(block) {
         });
 
         menuItems = parseNav([...navUl.children]);
-        //console.log('Parsed menu items:', menuItems);
+        // console.log('Parsed menu items:', menuItems);
       }
 
       // get CTA

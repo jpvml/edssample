@@ -25,8 +25,15 @@ function buildHeroBlock(main) {
     if (h1.closest('.hero') || picture.closest('.hero')) {
       return; // Don't create a duplicate hero block
     }
+    const elems = [picture.closest('p') || picture, h1];
+    let next = h1.nextElementSibling;
+    while (next && !next.className.includes('section-metadata')) {
+      const current = next;
+      next = next.nextElementSibling;
+      elems.push(current);
+    }
     const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
+    section.append(buildBlock('hero', { elems }));
     main.prepend(section);
   }
 }

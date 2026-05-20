@@ -5,7 +5,7 @@ footer {
   padding: 56px 1pc 40px;
 }
 
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
   footer {
     padding: 78pt 1pc 2pc;
   }
@@ -24,7 +24,7 @@ footer {
   margin-bottom: 32px;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .footer-logo-group {
     margin-bottom: 0;
     align-items: flex-start;
@@ -56,10 +56,9 @@ footer {
   text-align: center;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .footer-links {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
     justify-content: space-between;
     text-align: left;
   }
@@ -70,7 +69,7 @@ footer {
 }
 
 .footer-links-group h4 {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgb(255 255 255 / 50%);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1.5px;
@@ -98,7 +97,7 @@ footer {
   justify-content: center;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .footer-links-group a {
     justify-content: flex-start;
   }
@@ -123,7 +122,7 @@ footer {
 
 .footer-bottom hr {
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgb(255 255 255 / 15%);
   margin: 32px 0;
 }
 
@@ -134,7 +133,7 @@ footer {
   gap: 32px;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .footer-bottom-content {
     flex-direction: row;
     justify-content: space-between;
@@ -146,7 +145,7 @@ footer {
   text-align: center;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .footer-copyright {
     text-align: left;
     max-width: 60%;

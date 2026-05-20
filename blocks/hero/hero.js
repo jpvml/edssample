@@ -9,11 +9,22 @@ export default async function decorate(block) {
   // get heading text value
   const headingValue = heading ? heading.textContent : null;
 
+  // get the second p element text
+  let topTitle = block.querySelectorAll('p')[1].outerHTML;
+  if (topTitle) {
+    topTitle = topTitle.replace(/<p>/g, '').replace(/<\/p>/g, '').trim();
+  }
+  // get the subtitle p element text
+  let subTitle = block.querySelectorAll('p')[2].outerHTML;
+  if (subTitle) {
+    subTitle = subTitle.replace(/<p>/g, '').replace(/<\/p>/g, '').trim();
+  }
+
   // Hardcoded content for this version as requested
   const data = {
-    intro: 'BIENVENIDO A <b>QIK BANCO DIGITAL</b>',
+    intro: topTitle,
     title: headingValue || 'Todo lo que esperas de un banco, 100% adaptado a tu vida digital. Únete hoy.',
-    subtitle: 'Productos y servicios financieros, con más beneficios y menos costos. <b>100% digital.</b>',
+    subtitle: subTitle,
     bgColor: '#0082cd',
     image: {
       desktop: 'https://qik.do/content/dam/qik/home/hero-banner/Hero_Banner_Home.webp/_jcr_content/renditions/5x4_lg.webp',
