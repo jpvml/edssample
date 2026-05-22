@@ -1,0 +1,181 @@
+/* stylelint-disable selector-class-pattern */
+.accordion .cmp-accordion {
+  margin-bottom: 24px;
+}
+
+.accordion .cmp-accordion__header {
+  height: 100%;
+  margin: 0;
+}
+
+.accordion .cmp-accordion__button {
+  align-items: center;
+  background: none;
+  border: none;
+  color: #141414;
+  display: flex !important;
+  height: 100%;
+  justify-content: space-between;
+  padding: 20px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 24px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+@media (width >=768px) {
+  .accordion .cmp-accordion__button {
+    font-size: 18px;
+    line-height: 24px;
+  }
+}
+
+.accordion .cmp-accordion__button .cmp-accordion__title {
+  margin-right: 8px;
+}
+
+.accordion .cmp-accordion__button .cmp-accordion__icon {
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+  min-width: 24px;
+  background-image: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4V20M4 12H20" stroke="%230082cd" stroke-width="2.5" stroke-linecap="round"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: transform 0.3s ease;
+}
+
+.accordion .cmp-accordion__button--expanded .cmp-accordion__icon {
+  background-image: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12H20" stroke="%230082cd" stroke-width="2.5" stroke-linecap="round"/></svg>');
+}
+
+@media (width >=768px) {
+  .accordion .cmp-accordion__button .cmp-accordion__title {
+    margin-right: 16px;
+  }
+}
+
+.accordion .cmp-accordion__item {
+  background: #fff;
+  border: 1px solid rgb(20 20 20 / 5%);
+  border-radius: 16px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+
+.accordion .cmp-accordion__item--height-fit-content .cmp-accordion__header {
+  height: auto;
+}
+
+.accordion .cmp-accordion__item[data-cmp-expanded] .cmp-accordion__header {
+  height: auto;
+}
+
+.accordion .cmp-accordion__item--height-fit-content {
+  height: fit-content;
+}
+
+@media (width >=768px) {
+  .accordion .cmp-accordion__item {
+    margin-bottom: 16px;
+    width: 48%;
+    height: fit-content;
+  }
+
+  .accordion .cmp-accordion {
+    column-gap: 2%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.accordion .cmp-accordion__panel {
+  color: #545454;
+  padding: 0 16px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  display: block;
+}
+
+.accordion .cmp-accordion__panel--hidden {
+  display: none !important;
+}
+
+.accordion .cmp-accordion__panel p {
+  margin-bottom: 1em;
+  margin-top: 0;
+}
+
+.accordion .cmp-accordion__panel a {
+  color: #003c73;
+  text-decoration: underline;
+}
+
+@media (width >=768px) {
+  .accordion .cmp-accordion__panel {
+    padding: 0 24px 24px;
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  .accordion .cmp-accordion__panel ul li {
+    margin-bottom: 16px;
+  }
+}
+
+/* default-content-wrapper inside accordion section (FAQ Title & Description) */
+.section.accordion-container .default-content-wrapper {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+@media (width >=768px) {
+  .section.accordion-container .default-content-wrapper {
+    margin-bottom: 48px;
+  }
+}
+
+.section.accordion-container .default-content-wrapper p:first-of-type {
+  color: #001e41;
+  font-family: var(--fixed-font-family);
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 40px;
+  margin: 0 0 12px;
+}
+
+@media (width >=768px) {
+  .section.accordion-container .default-content-wrapper p:first-of-type {
+    font-size: 48px;
+    line-height: 56px;
+    margin-bottom: 16px;
+  }
+}
+
+.section.accordion-container .default-content-wrapper p:last-of-type {
+  color: #545454;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  line-height: 24px;
+  margin: 0 auto;
+
+}
+
+@media (width >=768px) {
+  .section.accordion-container .default-content-wrapper p:last-of-type {
+    font-size: 18px;
+    line-height: 28px;
+    margin-bottom: 48px;
+  }
+}

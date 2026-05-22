@@ -49,7 +49,8 @@
 }
 
 .hero .top-title {
-  font-family: DM Sans, sans-serif;;
+  font-family: DM Sans, sans-serif;
+  ;
   font-size: 16px;
 }
 
@@ -70,15 +71,15 @@
 
 /* FORM */
 .hero__left-form {
-    background-color: #fff;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    font-size: 18px;
-    margin-bottom: 0;
-    margin-top: 30px;
-    padding: 17px;
-    position: relative;
+  background-color: #fff;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  margin-bottom: 0;
+  margin-top: 30px;
+  padding: 17px;
+  position: relative;
 }
 
 .hero__left-form-wrapper {
@@ -118,10 +119,10 @@
 }
 
 .hero__left-button {
-  background-color: #0082cd;
+  background-color: #f6f6f6;
   border: none;
   border-radius: 8px;
-  color: #fff;
+  color: #e2e2e2;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -132,6 +133,10 @@
   text-decoration: none;
   transition: background-color 0.3s;
   width: 100%;
+
+  span {
+    color: #e2e2e2;
+  }
 }
 
 .hero__left-button:hover {
@@ -170,7 +175,7 @@
 }
 
 /* DESKTOP STYLES */
-@media (width >= 900px) {
+@media (width >=900px) {
   .hero-wrapper {
     flex-direction: row;
     align-items: center;
