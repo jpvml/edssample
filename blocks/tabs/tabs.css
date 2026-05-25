@@ -18,13 +18,15 @@
 .tabs .cmp-tabs__tablist {
   -webkit-box-align: center;
   align-items: center;
-  border-radius: 9999px;
+  border-radius: 25px;
   display: inline-flex;
+  flex-wrap: wrap;
   margin: 0;
   background: #e9edf2;
   gap: 8px;
   list-style: none;
   padding: 6px;
+  max-width: 25pc;
 }
 
 
@@ -47,6 +49,7 @@
   border-radius: 9999px;
   display: inline-flex;
   margin: 0;
+  width: 100%;
 }
 
 .tabs .cmp-tabs__tab--active {
@@ -57,6 +60,18 @@
 .tabs .cmp-tabs__tab--active:hover {
   background: #003c73 !important;
   color: #fff;
+}
+
+.tabs .cmp-tabs__tab--active:after {
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+  content: "";
+  height: 8px;
+  margin-left: 10px;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  translate: 0 -1px;
+  width: 8px;
 }
 
 .tabs .cmp-tabs__tab:hover {
@@ -97,8 +112,8 @@
 }
 
 .tabs .cmp-teaser__title {
-  color: #001e41;
-  font-family: 'DM Sans', sans-serif;
+  color: #003c73;
+  font-family: var(--fixed-font-family);
   font-size: 20px;
   font-weight: 700;
   line-height: 28px;
@@ -106,8 +121,7 @@
 }
 
 .tabs .cmp-teaser__description {
-  color: #545454;
-  font-family: 'DM Sans', sans-serif;
+  font-family: sans-serif;
   font-size: 16px;
   line-height: 24px;
 }
@@ -126,7 +140,7 @@
 
 .tabs .cmp-teaser__image picture {
   display: block;
-  width: 100%;
+  padding: 0 16px;
 }
 
 .tabs .cmp-teaser__image img {
@@ -136,10 +150,29 @@
   width: 100%;
 }
 
+.tabs .cmp-teaser__description p {
+  font-family: var(--body-dm-sans-font-family);
+  font-size: 1pc;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: .2px;
+  line-height: 24px;
+}
+
 /* ============================================================
    Desktop layout — side-by-side, 45 / 45 split
    ============================================================ */
 @media (width >=768px) {
+  .tabs .cmp-tabs__tablist {
+    border-radius: 9999px;
+    justify-self: flex-start;
+    max-width: none;
+  }
+
+  .tabs .cmp-tabs__tab {
+    width: auto;
+  }
+
   .tabs .cmp-teaser {
     flex-direction: row;
     gap: 48px;
@@ -167,11 +200,19 @@
   .tabs .cmp-teaser__title {
     font-size: 36px;
     line-height: 40px;
-    margin: 0 0 24px;
+    margin: 0 0 16px;
   }
 
   .tabs .cmp-teaser__description {
     font-size: 18px;
     line-height: 28px;
+  }
+
+  .tabs .cmp-teaser__description p {
+    font-size: 18px;
+    line-height: 28px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: .2px;
   }
 }

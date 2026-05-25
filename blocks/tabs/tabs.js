@@ -18,11 +18,9 @@ export default async function decorate(block) {
   const rows = [...block.children];
   block.textContent = '';
 
-  // ── Outer wrapper ────────────────────────────────────────────────────────
   const tabsEl = document.createElement('div');
   tabsEl.className = 'cmp-tabs';
 
-  // ── Tab list (header) ────────────────────────────────────────────────────
   const header = document.createElement('div');
   header.className = 'cmp-tabs__header';
 
@@ -34,7 +32,6 @@ export default async function decorate(block) {
   header.append(tablist);
   tabsEl.append(header);
 
-  // ── Build tabs + panels ──────────────────────────────────────────────────
   const tabEls = [];
   const panelEls = [];
 

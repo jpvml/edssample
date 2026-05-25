@@ -8,6 +8,15 @@
 }
 
 @font-face {
+  font-family: dm-sans;
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../fonts/rP2Wp2ywxg089UriCZaSExd86J3t9jz86MvyyKK58UfivUw4aw.woff2') format('woff2');
+}
+
+
+@font-face {
   font-family: roboto-condensed;
   font-style: normal;
   font-weight: 700;

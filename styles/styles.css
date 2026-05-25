@@ -23,6 +23,7 @@
   --body-font-family: chillax, roboto, roboto-fallback, sans-serif;
   --heading-font-family: chillax, roboto-condensed, roboto-condensed-fallback, sans-serif;
   --fixed-font-family: chillax, roboto-condensed, roboto-condensed-fallback, sans-serif;
+  --body-dm-sans-font-family: dm-sans, roboto, roboto-fallback, sans-serif;
 
   /* body sizes */
   --body-font-size-m: 22px;
@@ -328,25 +329,17 @@ main>.section:first-of-type {
   margin-top: 0;
 }
 
-@media (width >=900px) {
-  main>.section>div {
-    max-width: 1440px;
-    margin: auto;
-    padding: 0 24px;
-  }
-}
 
 /* section metadata */
 main .section.light,
 main .section.highlight {
   background-color: var(--background-color);
   margin: 0;
-  padding: 120px 0;
+  padding: 56px 16px;
 
   .default-content-wrapper,
   .accordion-wrapper {
     max-width: 1280px;
-    margin: auto;
   }
 
   .accordion-wrapper {
@@ -356,4 +349,22 @@ main .section.highlight {
 
 main .section.gray-background {
   background-color: #f8f8f8;
+}
+
+main .section.tabs-container {
+  margin: 0 16px 40px 16px;
+}
+
+@media (width >=900px) {
+  main>.section>div {
+    max-width: 1440px;
+    margin: auto;
+    padding: 0 24px;
+  }
+
+  /* section metadata */
+  main .section.light,
+  main .section.highlight {
+    padding: 120px 16px;
+  }
 }

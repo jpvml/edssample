@@ -141,6 +141,7 @@
 
 .hero__left-button:hover {
   background-color: #4bb9ff;
+  text-decoration: none;
 }
 
 .error-msg {
