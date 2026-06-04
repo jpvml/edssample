@@ -183,6 +183,14 @@ export default async function decorate(block) {
   cta.href = ctaHref;
   cta.innerHTML = `<span class="cmp-button__text">${ctaLabel}</span>`;
 
+  if (ctaHref === '#open-modal__preregistro') {
+    cta.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const { openModal } = await import('../preregistro/preregistro.js');
+      openModal();
+    });
+  }
+
   buttonWrapper.append(cta);
   actions.append(buttonWrapper);
 

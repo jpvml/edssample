@@ -49,7 +49,7 @@ export default async function decorate(block) {
         <input type="text" class="hero__left-input js-form-input" tabindex="0">
         <p class="error-msg hide">Campo requerido</p>
       </div>
-      <a class="hero__left-button button--primary js-form-button" href="#open-modal__preregistro" tabindex="0"><span>Unirme a Qik</span></a>
+      <a class="hero__left-button button--primary js-form-button disabled" href="#open-modal__preregistro" tabindex="0"><span>Unirme a Qik</span></a>
     </div>
   `;
 
@@ -80,6 +80,19 @@ export default async function decorate(block) {
   const button = left.querySelector('.js-form-button');
   const errorMsg = left.querySelector('.error-msg');
 
+  /* eslint-disable-next-line no-useless-escape, max-len */
+  const isValidEmail = (v) => /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v.toLowerCase());
+
+  const updateButtonState = () => {
+    if (button) {
+      if (isValidEmail(input.value.trim())) {
+        button.classList.remove('disabled');
+      } else {
+        button.classList.add('disabled');
+      }
+    }
+  };
+
   if (input && label) {
     input.addEventListener('focus', () => {
       label.classList.add('small');
@@ -91,19 +104,25 @@ export default async function decorate(block) {
       }
     });
 
+    input.addEventListener('input', updateButtonState);
+
     // Initial check in case of browser autofill
     if (input.value !== '') {
       label.classList.add('small');
+      updateButtonState();
     }
   }
 
   if (button) {
-    button.addEventListener('click', (e) => {
+    button.addEventListener('click', async (e) => {
       if (!input.value.trim()) {
         e.preventDefault();
         errorMsg.classList.remove('hide');
       } else {
+        e.preventDefault();
         errorMsg.classList.add('hide');
+        const { openModal } = await import('../preregistro/preregistro.js');
+        openModal(input.value.trim());
       }
     });
   }

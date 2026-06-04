@@ -352,7 +352,7 @@ main .section.gray-background {
 }
 
 main .section.tabs-container {
-  margin: 0 16px 40px 16px;
+  margin: 0 16px 40px;
 }
 
 @media (width >=900px) {

@@ -49,7 +49,7 @@
 }
 
 .hero .top-title {
-  font-family: DM Sans, sans-serif;
+  font-family: "DM Sans", sans-serif;
   ;
   font-size: 16px;
 }
@@ -63,7 +63,7 @@
 }
 
 .hero .subtitle p {
-  font-family: DM Sans, sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 18px;
   line-height: 28px;
   margin-top: 0;
@@ -96,6 +96,7 @@
   border-radius: 8px;
   box-sizing: border-box;
   color: #000;
+  font-family: "DM Sans", sans-serif;
   font-size: 16px;
   height: 100%;
   padding: 24px 16px 8px;
@@ -105,6 +106,7 @@
 
 .hero__left-input-label {
   color: #545454;
+  font-family: "DM Sans", sans-serif;
   font-size: 16px;
   left: 16px;
   position: absolute;
@@ -119,10 +121,10 @@
 }
 
 .hero__left-button {
-  background-color: #f6f6f6;
+  background-color: #0082cd;
   border: none;
-  border-radius: 8px;
-  color: #e2e2e2;
+  border-radius: 20px;
+  color: #fff;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -135,13 +137,23 @@
   width: 100%;
 
   span {
-    color: #e2e2e2;
+    color: #fff;
   }
 }
 
 .hero__left-button:hover {
   background-color: #4bb9ff;
   text-decoration: none;
+}
+
+.hero__left-button.disabled {
+  background-color: #f6f6f6;
+  pointer-events: none;
+  cursor: default;
+
+  span {
+    color: #e2e2e2;
+  }
 }
 
 .error-msg {

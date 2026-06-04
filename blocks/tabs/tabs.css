@@ -16,7 +16,7 @@
 }
 
 .tabs .cmp-tabs__tablist {
-  -webkit-box-align: center;
+  align-items: center;
   align-items: center;
   border-radius: 25px;
   display: inline-flex;
@@ -62,20 +62,20 @@
   color: #fff;
 }
 
-.tabs .cmp-tabs__tab--active:after {
+.tabs .cmp-tabs__tab--active::after {
   border-bottom: 2px solid;
   border-right: 2px solid;
   content: "";
   height: 8px;
   margin-left: 10px;
-  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
   transform: rotate(45deg);
   translate: 0 -1px;
   width: 8px;
 }
 
 .tabs .cmp-tabs__tab:hover {
-  background: rgba(11, 77, 120, .08);
+  background: rgb(11 77 120 / 8%);
 }
 
 .tabs .cmp-tabs__tab:focus-visible {
