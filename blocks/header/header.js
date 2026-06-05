@@ -1,5 +1,38 @@
 import { decorateIcons, getMetadata } from '../../scripts/aem.js';
 
+async function validateLink(url) {
+  try {
+    const urlObj = new URL(url, window.location.href);
+    let fetchUrl = url;
+    if (!urlObj.pathname.includes('.')) {
+      const path = urlObj.pathname.endsWith('/') ? `${urlObj.pathname}index` : urlObj.pathname;
+      fetchUrl = `${urlObj.origin}${path}.plain.html`;
+    }
+    const response = await fetch(fetchUrl);
+    return response.ok;
+  } catch (e) {
+    return false;
+  }
+}
+
+async function validateNavLinks(navBlock) {
+  const links = navBlock.querySelectorAll('a');
+
+  for (const link of links) {
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#')) continue;
+
+    const urlObj = new URL(link.href, window.location.href);
+    if (urlObj.hostname !== window.location.hostname) continue;
+
+    const exists = await validateLink(link.href);
+
+    if (!exists) {
+      link.closest('li')?.remove(); // or hide
+    }
+  }
+}
+
 /**
  * loads and decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -205,6 +238,9 @@ export default async function decorate(block) {
   // Assemble Header
   headerContainer.append(logo, nav, actions);
   block.append(headerContainer);
+
+  // Validate navigation links
+  await validateNavLinks(nav);
 
   // Interactivity: Mobile Menu Toggle
   toggle.addEventListener('click', () => {

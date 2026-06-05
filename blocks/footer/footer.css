@@ -13,7 +13,7 @@ footer {
 
 .footer-container {
   margin: 0 auto;
-  max-width: 1200px;
+  max-width: 1280px;
 }
 
 .footer-logo-group {
@@ -36,6 +36,7 @@ footer {
 .footer-logo img {
   height: 56px;
   margin-bottom: 8px;
+  max-width: 81px;
 }
 
 .footer-app-buttons {
@@ -61,10 +62,11 @@ footer {
     flex-flow: row wrap;
     justify-content: space-between;
     text-align: left;
+    margin-left: 8.33333333%;
+    width: 83.33333333%;
   }
 
   .footer-links-group {
-    flex: 1 1 200px;
   }
 }
 
@@ -84,7 +86,13 @@ footer {
 }
 
 .footer-links-group li {
-  margin-bottom: 16px;
+  margin-top: 24px;
+  font-size: 18px;
+  line-height: 28px;
+  font-family: "DM Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.2px;
 }
 
 .footer-links-group a {

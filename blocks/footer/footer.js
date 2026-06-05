@@ -1,10 +1,26 @@
-import { decorateIcons } from '../../scripts/aem.js';
+import { getMetadata, decorateIcons } from '../../scripts/aem.js';
+import { loadFragment } from '../fragment/fragment.js';
 
 /**
  * loads and decorates the footer
  * @param {Element} block The footer block element
  */
 export default async function decorate(block) {
+  // load footer as fragment
+  const footerMeta = getMetadata('footer');
+  const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
+
+  const resp = await fetch(`${footerPath}.plain.html`);
+
+  if (!resp.ok) return;
+
+  const html = await resp.text();
+  console.log("html: ", html);
+  const temp = document.createElement('div');
+  temp.innerHTML = html;
+
+  const fragment = temp.querySelector('.footer');
+
   block.textContent = '';
 
   const footerContainer = document.createElement('div');
@@ -15,70 +31,72 @@ export default async function decorate(block) {
 
   const logoGroup = document.createElement('div');
   logoGroup.classList.add('footer-links-group', 'footer-logo-group');
-  logoGroup.innerHTML = `
-    <div class="footer-logo">
-      <a href="/">
-        <img src="https://qik.do/content/experience-fragments/qik/do/es/site/footer/master/_jcr_content/root/container/container/image_copy.coreimg.svg/1733256272861/footer-logo.svg" alt="Qik Logo">
-      </a>
-    </div>
-    <div class="footer-app-buttons">
-      <a href="https://qik.sng.link/Efcxh/weixq?_dl=qik%3A%2F%2Fqik.app&_smtype=3" target="_blank">
-        <img src="https://qik.do/content/experience-fragments/qik/do/es/site/footer/master/_jcr_content/root/container/container/image.coreimg.png/1746813210922/appstore.png" alt="Descarga App Qik para iOS">
-      </a>
-      <a href="https://qik.sng.link/Efcxh/weixq?_dl=qik%3A%2F%2Fqik.app&_smtype=3" target="_blank">
-        <img src="https://qik.do/content/experience-fragments/qik/do/es/site/footer/master/_jcr_content/root/container/container/image_693652013.coreimg.png/1746813219861/googleplay.png" alt="Descarga App Qik para Android">
-      </a>
-    </div>
-  `;
-  linksSection.append(logoGroup);
 
-  const linkGroups = [
-    {
-      title: 'Legales',
-      links: [
-        { text: 'Acuerdo de productos y servicios', url: '/contrato-completo' },
-        { text: 'Aviso legal y condiciones de uso', url: '/legal/avisolegal' },
-        { text: 'Publicaciones Institucionales', url: '/publicaciones-institucionales' },
-        { text: 'Tarifario de productos y servicios', url: '/legal/tarifario' },
-        { text: 'Políticas de Cookies', url: '/legal/politicadecookies' },
-        { text: 'Políticas de Seguridad y Privacidad', url: '/legal/politicas-de-privacidad-y-seguridad' },
-        { text: 'Derechos y deberes de los usuarios', url: 'https://qik.do/content/dam/qik/legal/Carta%20de%20Derechos%20y%20Deberes%20de%20los%20Usuarios.pdf' },
-      ],
-    },
-    {
-      title: 'Productos',
-      links: [
-        { text: 'Tarjeta de Crédito', url: '/tarjetadecredito' },
-        { text: 'Préstamos', url: '/prestamosqik' },
-        { text: 'Cuenta de Ahorro', url: '/cuentaqik' },
-        { text: 'Tarjeta de Débito', url: '/cuentaqik' },
-        { text: 'Certificados', url: '/certificados' },
-        { text: 'Subagentes Bancarios', url: '/subagentes' },
-        { text: 'Promociones', url: '/Promociones_TC_Qik' },
-        { text: 'Qik Pro', url: '/pro' },
-        { text: 'Tasa del día', url: '/tasadeldia' },
-      ],
-    },
-    {
-      title: 'Redes Sociales',
-      links: [
-        { text: 'Facebook', url: 'https://www.facebook.com/qikbancodigitaldominicano', icon: 'facebook' },
-        { text: 'Instagram', url: 'https://www.instagram.com/qikbanco/', icon: 'instagram' },
-        { text: 'X', url: 'https://twitter.com/QikBanco', icon: 'twitter' },
-        { text: 'Linkedin', url: 'https://www.linkedin.com/company/qik-banco/', icon: 'linkedin' },
-        { text: 'TikTok', url: 'https://www.tiktok.com/@qikbanco?_t=8WyNTcPCKlZ&_r=1', icon: 'tiktok' },
-        { text: 'YouTube', url: 'https://www.youtube.com/channel/UCPrCmR6jVFMAbJ5JieaR1EA', icon: 'youtube' },
-      ],
-    },
-    {
-      title: 'Contacto',
-      links: [
-        { text: 'ayuda@qik.com.do', url: 'mailto:ayuda@qik.com.do' },
-        { text: '809-364-2161', url: 'tel:8093642161' },
-        { text: 'Chat Qik', url: '/Descargar_App_Qik' },
-      ],
-    },
-  ];
+  const appButtons = document.createElement('div');
+  appButtons.classList.add('footer-app-buttons');
+
+  let currentGroup = null;
+  const linkGroups = [];
+
+  const footerDataBlock = fragment;
+  if (footerDataBlock) {
+    [...footerDataBlock.children].forEach((row) => {
+      const type = row.children[0]?.textContent?.trim().toLowerCase();
+
+      if (type === 'logo') {
+        const url = row.children[1]?.textContent?.trim();
+        const href = row.children[2]?.textContent?.trim() || '/';
+        const target = row.children[3]?.textContent?.trim() || '_self';
+        const logoDiv = document.createElement('div');
+        logoDiv.classList.add('footer-logo');
+        logoDiv.innerHTML = `<a href="${href}" target="${target}"><img src="${url}" alt="Qik Logo"></a>`;
+        logoGroup.prepend(logoDiv);
+      } else if (type === 'appstore' || type === 'googleplay') {
+        const url = row.children[1]?.textContent?.trim();
+        const href = row.children[2]?.textContent?.trim();
+        const target = row.children[3]?.textContent?.trim() || '_self';
+        const a = document.createElement('a');
+        a.href = href;
+        a.target = target;
+        a.innerHTML = `<img src="${url}" alt="${type}">`;
+        appButtons.append(a);
+      } else if (type === 'section') {
+        currentGroup = {
+          title: row.children[1]?.textContent?.trim(),
+          links: []
+        };
+        linkGroups.push(currentGroup);
+      } else if (type === 'link' || type === 'social' || type === 'contact') {
+        if (currentGroup) {
+          const text = row.children[1]?.textContent?.trim();
+          const url = row.children[2]?.textContent?.trim();
+          let icon = '';
+          let target = '';
+
+          if (type === 'social') {
+            icon = row.children[3]?.textContent?.trim() || '';
+            target = '_blank';
+          } else {
+            target = row.children[3]?.textContent?.trim() || '';
+          }
+
+          currentGroup.links.push({
+            text,
+            url,
+            icon,
+            target
+          });
+        }
+      }
+    });
+  }
+
+  if (appButtons.children.length > 0) {
+    logoGroup.append(appButtons);
+  }
+  if (logoGroup.children.length > 0) {
+    linksSection.append(logoGroup);
+  }
 
   linkGroups.forEach((group) => {
     const groupDiv = document.createElement('div');
@@ -92,6 +110,9 @@ export default async function decorate(block) {
       const item = document.createElement('li');
       const a = document.createElement('a');
       a.href = link.url;
+      if (link.target) {
+        a.target = link.target;
+      }
       if (link.icon) {
         const icon = document.createElement('i');
         icon.classList.add(`icon-${link.icon}`);
@@ -106,7 +127,6 @@ export default async function decorate(block) {
     groupDiv.append(list);
     linksSection.append(groupDiv);
   });
-
 
   const bottomSection = document.createElement('div');
   bottomSection.classList.add('footer-bottom');
