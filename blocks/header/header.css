@@ -1,3 +1,8 @@
+header.header-wrapper {
+  min-height: 89px;
+  background-color: #0082cd; /* Match your .header.block color */
+  contain-intrinsic-size: 0 89px; /* Reserve 89px height */
+}
 .header {
   background-color: #0082cd;
   color: #fff;

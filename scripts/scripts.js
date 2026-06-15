@@ -51,6 +51,19 @@ async function loadFonts() {
 }
 
 /**
+ * Redirects the root URL to the default language path.
+ * @returns {boolean} true when a redirect was triggered
+ */
+function redirectRoot() {
+  const { pathname, search, hash } = window.location;
+  if (pathname === '/' || pathname === '') {
+    window.location.replace(`/en/${search}${hash}`);
+    return true;
+  }
+  return false;
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
@@ -138,7 +151,15 @@ export function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  document.documentElement.lang = 'en';
+  const urlPath = window.location.pathname.split('/')[1];
+  const urlRegex = /^[a-z]{2}$/;
+  let lang = 'en';
+  if (urlRegex.test(urlPath)) {
+    const match = urlPath.match(urlRegex);
+    lang = match ? match[0] : 'en';
+  }
+
+  document.documentElement.lang =  lang;
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
@@ -188,6 +209,7 @@ function loadDelayed() {
 }
 
 async function loadPage() {
+  if (redirectRoot()) return;
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();

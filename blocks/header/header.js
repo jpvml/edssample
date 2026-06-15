@@ -38,11 +38,13 @@ async function validateNavLinks(navBlock) {
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
+  const lang = document.documentElement.lang;
+  console.log('Header lang:', lang);
   // console.log('header BEGIN.....', block);
 
   // load nav as fragment
   const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
+  const navPath = navMeta ? new URL(navMeta, window.location).pathname : `/${lang}/nav`;
   const resp = await fetch(`${navPath}.plain.html`);
 
   let logoSrc = 'https://qik.do/content/experience-fragments/qik/do/es/site/header/home-page/_jcr_content/root/image.coreimg.svg/1733256272763/logo.svg';
@@ -114,7 +116,7 @@ export default async function decorate(block) {
   const logo = document.createElement('div');
   logo.classList.add('header-logo');
   const logoLink = document.createElement('a');
-  logoLink.href = '/';
+  logoLink.href = `/${lang}/`;
   const logoImg = document.createElement('img');
   logoImg.src = logoSrc;
   logoImg.alt = 'logo';
